@@ -66,13 +66,20 @@ function safe_mkdir($dirPath) {
 }
 
 function convert_assoc_to_csv($obj, $keys) {
+	$l = [];
 	foreach($keys as $key) {
 		if(!isset($obj[$key])) {
-			continue;
+			$obj[$key] = '""';
+		} else {
+			if (is_array($obj[$key])) {
+				$obj[$key] = json_encode($obj[$key]);
+			}
+			$obj[$key] = str_replace('"', '""', $obj[$key]);
+			if (!is_numeric($obj[$key])) {
+				$obj[$key] = '"'.$obj[$key].'"';
+			}
 		}
-		if (!is_numeric($obj[$key])) {
-			$obj[$key] = "'".$obj[$key]."'";
-		}
+		array_push($l, $obj[$key]);
 	}
-	return implode(",", $obj).PHP_EOL;
+	return implode(",", $l).PHP_EOL;
 }

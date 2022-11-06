@@ -1,3 +1,32 @@
+// utility functions
+
+// Shuffle without seed (use jsPsych functionality)
+function unseeded_shuffle(array) {
+	if (!Array.isArray(array)) {
+		console.error("Argument to shuffle() must be an array.");
+	}
+	
+	const copy_array = array.slice(0);
+	let m = copy_array.length,
+		t,
+		i;
+	
+	// While there remain elements to shuffle…
+	while (m) {
+		// Pick a remaining element…
+		i = Math.floor(Math.random() * m--);
+	
+		// And swap it with the current element.
+		t = copy_array[m];
+		copy_array[m] = copy_array[i];
+		copy_array[i] = t;
+	}
+	
+	return copy_array;
+}
+
+
+// data loaders/generators
 async function get_participant_id() {
 	const response = await fetch('backend/new_participant.php')
 	if(!response.ok) {
